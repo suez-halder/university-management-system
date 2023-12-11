@@ -1,7 +1,6 @@
 // src/app/modules/student/student.model.ts
 
 import { model, Schema } from 'mongoose';
-import bcrypt from 'bcrypt';
 
 import {
   TGuardian,
@@ -11,7 +10,6 @@ import {
   TUserName,
   StudentMethod,
 } from './student.interface';
-import config from '../../config';
 
 // schema create
 const userNameSchema = new Schema<TUserName>({
@@ -79,10 +77,11 @@ const LocalGuardianSchema = new Schema<TLocalGuardian>({
 const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>(
   {
     id: { type: String, required: [true, 'ID is required'], unique: true },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      maxlength: [20, 'Password cannot be more than 20 characters'],
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'User id is required'],
+      unique: true,
+      ref: 'User',
     },
     name: {
       type: userNameSchema,
@@ -127,11 +126,6 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>(
       required: true,
     },
     profileImg: { type: String },
-    isActive: {
-      type: String,
-      enum: ['active', 'blocked'],
-      default: 'active',
-    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -149,29 +143,6 @@ studentSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
-// mongoose middlewares (pre and post)
-// pre save middleware / hook: will work on create() or save()
-
-studentSchema.pre('save', async function (next) {
-  // console.log(this, 'pre hook: We will save our data');
-
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this; // eikhane this refer kore document ke
-
-  // hashing password and save into db
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds), // jehetu saltRounds number hisebe ashbe, eijnw Number diye wrap kore dite hobe
-  );
-  next();
-});
-
-// post save middleware / hook
-studentSchema.post('save', function (doc, next) {
-  doc.password = '';
-  next();
-});
-
 // Query Middleware
 studentSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
@@ -184,8 +155,6 @@ studentSchema.pre('findOne', function (next) {
 
   next();
 });
-
-// [ { '$match': { isDeleted: {$ne: true} } }  ,{ '$match': { id: 'BD202ffff566' } } ]
 
 // Aggregation middleware
 studentSchema.pre('aggregate', function (next) {
