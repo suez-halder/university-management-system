@@ -6,7 +6,8 @@ import app from './app';
 async function main() {
   try {
     // await mongoose.connect(process.env.DATABASE_URL);
-    await mongoose.connect(config.database_url as string); // typescript er assertion type use kora hoise
+    // TODO: write await before production
+    mongoose.connect(config.database_url as string); // typescript er assertion type use kora hoise
     app.listen(config.port, () => {
       console.log(`App is listening on port ${config.port}`);
     });

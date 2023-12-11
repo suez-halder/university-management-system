@@ -95,7 +95,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>(
         message: '{VALUE} is not valid',
       },
     },
-    dateOfBirth: { type: Date },
+    dateOfBirth: { type: String },
     email: {
       type: String,
       required: [true, 'Email is required'],
@@ -126,6 +126,10 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>(
       required: true,
     },
     profileImg: { type: String },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSemester',
+    },
   },
   {
     toJSON: {
