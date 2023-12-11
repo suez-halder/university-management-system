@@ -1,15 +1,11 @@
 // src/app/modules/student/student.controller.ts
 
-import { NextFunction, Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import httpStatus from 'http-status';
 import sendResponse from '../../utils/sendResponse';
 import { StudentServices } from './student.service';
 
-const getAllStudents = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const getAllStudents: RequestHandler = async (req, res, next) => {
   try {
     // will call service function to send this data
     const result = await StudentServices.getAllStudentsFromDB();
@@ -26,11 +22,7 @@ const getAllStudents = async (
   }
 };
 
-const getSingleStudents = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const getSingleStudents: RequestHandler = async (req, res, next) => {
   try {
     // will call service function to send this data
     const { studentId } = req.params;
@@ -48,11 +40,7 @@ const getSingleStudents = async (
   }
 };
 
-const deleteStudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const deleteStudent: RequestHandler = async (req, res, next) => {
   try {
     const { studentId } = req.params;
 
