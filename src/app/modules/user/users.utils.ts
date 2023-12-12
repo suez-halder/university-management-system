@@ -21,13 +21,31 @@ const findLastStudentId = async () => {
     .lean();
 
   // 203001 0001
-  return lastStudent?.id ? lastStudent.id.substring(6) : undefined;
+  return lastStudent?.id ? lastStudent.id : undefined;
 };
 
 // year semesterCode 4 digit number
 export const generateStudentId = async (payload: TAcademicSemester) => {
   // first time 0000
-  const currentId = (await findLastStudentId()) || (0).toString();
+  let currentId = (0).toString(); // 0000 default
+
+  // ! Validation check: jodi same year and same code hoy, tahole id ek ek kore barbe, jodi year or code change hoy, tahole abar 0 theke start hobe id generate hoya
+
+  const lastStudentId = await findLastStudentId();
+  // 2030 01 0001
+  const lastStudentSemesterCode = lastStudentId?.substring(4, 6); // 01
+  const lastStudentYear = lastStudentId?.substring(0, 4); // 2030
+
+  const currentSemesterCode = payload.code;
+  const currentYear = payload.year;
+
+  if (
+    lastStudentId &&
+    lastStudentSemesterCode === currentSemesterCode &&
+    lastStudentYear === currentYear
+  ) {
+    currentId = lastStudentId.substring(6); // 0001
+  }
 
   let incrementId = (Number(currentId) + 1).toString().padStart(4, '0');
 
