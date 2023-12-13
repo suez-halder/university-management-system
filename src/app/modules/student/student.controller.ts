@@ -7,7 +7,7 @@ import { StudentServices } from './student.service';
 
 const getAllStudents = catchAsync(async (req, res) => {
   // will call service function to send this data
-  const result = await StudentServices.getAllStudentsFromDB();
+  const result = await StudentServices.getAllStudentsFromDB(req.query);
 
   // send response
   sendResponse(res, {
@@ -34,8 +34,8 @@ const getSingleStudent = catchAsync(async (req, res) => {
 
 const updateStudent = catchAsync(async (req, res) => {
   const { studentId } = req.params;
-
-  const result = await StudentServices.updateStudentIntoDB(studentId);
+  const { student } = req.body;
+  const result = await StudentServices.updateStudentIntoDB(studentId, student);
 
   // send response
   sendResponse(res, {

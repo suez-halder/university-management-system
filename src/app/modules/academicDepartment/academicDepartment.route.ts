@@ -9,9 +9,10 @@ const router = express.Router();
 
 router.post(
   '/create-academic-department',
-  validateRequest(
-    AcademicDepartmentValidations.createAcademicDepartmentValidationSchema,
-  ),
+  // TODO: apatoto comment kore rakhsi
+  // validateRequest(
+  //   AcademicDepartmentValidations.createAcademicDepartmentValidationSchema,
+  // ),
   AcademicDepartmentControllers.createAcademicDepartment,
 );
 
