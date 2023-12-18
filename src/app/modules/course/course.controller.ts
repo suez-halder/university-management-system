@@ -44,6 +44,10 @@ const getSingleCourse = catchAsync(async (req, res) => {
   });
 });
 
+// * ------------------------------------ * //
+// ! dynamically adding/removing fields
+// * ------------------------------------ * //
+
 const updateCourse = catchAsync(async (req, res) => {
   // will call service function to send this data
   const { id } = req.params;
@@ -70,6 +74,10 @@ const deleteCourse = catchAsync(async (req, res) => {
   });
 });
 
+// * -------------------------------------------------- * //
+// ! Assign/Remove Multiple faculties into Single Course
+// * -------------------------------------------------- * //
+
 const assignFacultiesWithCourse = catchAsync(async (req, res) => {
   const { courseId } = req.params;
   const { faculties } = req.body;
@@ -87,6 +95,23 @@ const assignFacultiesWithCourse = catchAsync(async (req, res) => {
   });
 });
 
+const removeFacultiesFromCourse = catchAsync(async (req, res) => {
+  const { courseId } = req.params;
+  const { faculties } = req.body;
+
+  const result = await CourseServices.removeFacultiesFromCourseFromDB(
+    courseId,
+    faculties,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Faculties removed  successfully',
+    data: result,
+  });
+});
+
 export const CourseControllers = {
   createCourse,
   getAllCourses,
@@ -94,4 +119,5 @@ export const CourseControllers = {
   updateCourse,
   deleteCourse,
   assignFacultiesWithCourse,
+  removeFacultiesFromCourse,
 };
