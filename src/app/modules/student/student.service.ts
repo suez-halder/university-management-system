@@ -12,6 +12,7 @@ import { Student } from './student.model';
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
   const studentQuery = new QueryBuilder(
     Student.find()
+      .populate('user')
       .populate('admissionSemester')
       .populate({
         // ? nested populate korte chaile
@@ -34,6 +35,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
 const getSingleStudentFromDB = async (id: string) => {
   const result = await Student.findById(id)
+
     .populate('admissionSemester')
     .populate({
       // ? nested populate korte chaile

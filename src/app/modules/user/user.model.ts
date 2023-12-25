@@ -2,10 +2,10 @@
 
 import { model, Schema } from 'mongoose';
 import config from '../../config';
-import { TUser } from './user.interface';
+import { TUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 
-const userSchema = new Schema<TUser>(
+const userSchema = new Schema<TUser, UserModel>(
   {
     id: {
       type: String,
@@ -14,10 +14,14 @@ const userSchema = new Schema<TUser>(
     password: {
       type: String,
       required: true,
+      select: 0, // ! eikhane unselect kora hoise, eijnw jokhn laagbe explicitely select korte hobe jemon isUserExistsByCustomId ei static method use korar shomoye
     },
     needsPasswordChange: {
       type: Boolean,
       default: true,
+    },
+    passwordChangedAt: {
+      type: Date, // ! password kon shomoye change hocceh seta track korte hobe
     },
     role: {
       type: String,
@@ -55,4 +59,32 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
-export const User = model<TUser>('User', userSchema);
+// custom static method for checking user using id
+userSchema.statics.isUserExistsByCustomId = async function (id: string) {
+  return await User.findOne({
+    id,
+  }).select('+password'); // + deya mane, existing datar sathe password field add hobe
+};
+
+// custom static method for checking similar password
+userSchema.statics.isPasswordMatched = async function (
+  plainTextPassword,
+  hashedPassword,
+) {
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
+};
+
+// password ki jwt issue korar por change kora hoise?
+userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
+  passwordChangedTimestamp: Date,
+  jwtIssuedTimestamp: number,
+) {
+  const passwordChangedTime =
+    new Date(passwordChangedTimestamp).getTime() / 1000;
+
+  // console.log(passwordChangedTime > jwtIssuedTimestamp);
+
+  return passwordChangedTime > jwtIssuedTimestamp;
+};
+
+export const User = model<TUser, UserModel>('User', userSchema);
