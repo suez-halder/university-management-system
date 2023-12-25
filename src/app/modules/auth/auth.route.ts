@@ -14,7 +14,7 @@ const router = express.Router();
 // * ----------------* //
 
 router.post(
-  '/login',
+  '/login', // eikhane auth guard use kora jabena
   validateRequest(AuthValidations.loginValidationSchema),
   AuthControllers.loginUser,
 );
@@ -22,11 +22,22 @@ router.post(
 // * ------------------ * //
 // ! Change Password
 // * ------------------ * //
+
 router.post(
   '/change-password',
   auth(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student),
   validateRequest(AuthValidations.changePasswordValidationSchema),
   AuthControllers.changePassword,
+);
+
+// * ---------------- * //
+// ! Refresh Token
+// * ----------------* //
+
+router.post(
+  '/refresh-token', // eikhane auth guard use kora jabena
+  validateRequest(AuthValidations.refreshTokenValidationSchema),
+  AuthControllers.refreshToken,
 );
 
 export const AuthRoutes = router;
