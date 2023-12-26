@@ -20,5 +20,5 @@
     "titleBar.inactiveForeground": "#e7e7e799"
   },
   "peacock.color": "#000000",
-  "cSpell.words": ["middlewares"]
+  "cSpell.words": ["datetime", "middlewares"]
 }
