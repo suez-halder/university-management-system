@@ -49,7 +49,6 @@ export type TStudent = {
 // creating custom instance
 
 export type StudentMethod = {
-  // eslint-disable-next-line no-unused-vars
   isUserExists(id: string): Promise<TStudent | null>;
 };
 

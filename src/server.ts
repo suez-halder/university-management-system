@@ -12,7 +12,7 @@ async function main() {
   try {
     // await mongoose.connect(process.env.DATABASE_URL);
     // TODO: write await before production
-    await mongoose.connect(config.database_url as string); // typescript er assertion type use kora hoise
+    mongoose.connect(config.database_url as string); // typescript er assertion type use kora hoise
 
     seedSuperAdmin();
 
