@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post(
   '/create-academic-department',
-  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  // auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(
     AcademicDepartmentValidations.createAcademicDepartmentValidationSchema,
   ),

@@ -69,8 +69,45 @@ const changePassword = catchAsync(async (req, res) => {
   });
 });
 
+// * ---------------- * //
+// ! Forget Password
+// * ----------------* //
+
+const forgetPassword = catchAsync(async (req, res) => {
+  const userId = req.body.id;
+  const result = await AuthServices.forgetPassword(userId);
+
+  // send response
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Reset link is generated successfully',
+    data: result,
+  });
+});
+
+// * ---------------- * //
+// ! Reset Password
+// * ----------------* //
+
+const resetPassword = catchAsync(async (req, res) => {
+  const token = req.headers.authorization;
+
+  const result = await AuthServices.resetPassword(req.body, token as string);
+
+  // send response
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Password has been reset successfully',
+    data: result,
+  });
+});
+
 export const AuthControllers = {
   loginUser,
   refreshToken,
   changePassword,
+  forgetPassword,
+  resetPassword,
 };

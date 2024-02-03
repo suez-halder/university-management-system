@@ -40,4 +40,24 @@ router.post(
   AuthControllers.refreshToken,
 );
 
+// * ---------------- * //
+// ! Forget Password
+// * ----------------* //
+
+router.post(
+  '/forget-password', // eikhane auth guard use kora jabena
+  validateRequest(AuthValidations.forgetPasswordValidationSchema),
+  AuthControllers.forgetPassword,
+);
+
+// * ---------------- * //
+// ! Reset Password
+// * ----------------* //
+
+router.post(
+  '/reset-password', // eikhane auth guard use kora jabena
+  validateRequest(AuthValidations.resetPasswordValidationSchema),
+  AuthControllers.resetPassword,
+);
+
 export const AuthRoutes = router;
