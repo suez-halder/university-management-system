@@ -40,9 +40,10 @@ export type TStudent = {
   guardian: TGuardian;
   localGuardian: TLocalGuardian;
   profileImg?: string;
-  isDeleted: boolean;
   admissionSemester: Types.ObjectId;
   academicDepartment: Types.ObjectId;
+  academicFaculty: Types.ObjectId;
+  isDeleted: boolean;
 };
 
 // creating custom instance
