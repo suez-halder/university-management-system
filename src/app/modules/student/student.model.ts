@@ -125,7 +125,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>(
       type: LocalGuardianSchema,
       required: true,
     },
-    profileImg: { type: String },
+    profileImg: { type: String, default: '' },
     admissionSemester: {
       type: Schema.Types.ObjectId,
       ref: 'AcademicSemester',
