@@ -1,7 +1,9 @@
 // * src/app/modules/academicDepartment/academicDepartment.route.ts
 
 import express from 'express';
+import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
+import { USER_ROLE } from '../user/user.constant';
 import { AcademicDepartmentControllers } from './academicDepartment.controller';
 import { AcademicDepartmentValidations } from './academicDepartment.validation';
 
@@ -9,10 +11,10 @@ const router = express.Router();
 
 router.post(
   '/create-academic-department',
-  // TODO: apatoto comment kore rakhsi
-  // validateRequest(
-  //   AcademicDepartmentValidations.createAcademicDepartmentValidationSchema,
-  // ),
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  validateRequest(
+    AcademicDepartmentValidations.createAcademicDepartmentValidationSchema,
+  ),
   AcademicDepartmentControllers.createAcademicDepartment,
 );
 

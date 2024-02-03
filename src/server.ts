@@ -4,6 +4,7 @@ import config from './app/config';
 import mongoose from 'mongoose';
 import app from './app';
 import { Server } from 'http';
+import seedSuperAdmin from './app/DB';
 
 let server: Server;
 
@@ -12,6 +13,8 @@ async function main() {
     // await mongoose.connect(process.env.DATABASE_URL);
     // TODO: write await before production
     mongoose.connect(config.database_url as string); // typescript er assertion type use kora hoise
+
+    seedSuperAdmin();
 
     server = app.listen(config.port, () => {
       console.log(`App is listening on port ${config.port}`);
