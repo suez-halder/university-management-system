@@ -1,6 +1,7 @@
 // * src/app/modules/offeredCourse/offeredCourse.service.ts
 
 import httpStatus from 'http-status';
+import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
@@ -123,9 +124,40 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   return result;
 };
 
-const getAllOfferedCoursesFromDB = async () => {};
+const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
+  const offeredCourseQuery = new QueryBuilder(OfferedCourse.find(), query)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
 
-const getSingleOfferedCourseFromDB = async () => {};
+  const result = await offeredCourseQuery.modelQuery;
+  const meta = await offeredCourseQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
+};
+
+// * -------------------------------------------------- * //
+// ! Get My Offered Courses
+// * -------------------------------------------------- * //
+
+const getMyOfferedCoursesFromDB = async (userId: string) => {
+  console.log(userId);
+  return null;
+};
+
+const getSingleOfferedCourseFromDB = async (id: string) => {
+  const offeredCourse = await OfferedCourse.findById(id);
+
+  if (!offeredCourse) {
+    throw new AppError(404, 'Offered Course not found');
+  }
+
+  return offeredCourse;
+};
 
 const updateOfferedCourseIntoDB = async (
   id: string,
@@ -195,6 +227,7 @@ const deleteOfferedCourseFromDB = async () => {};
 export const OfferedCourseServices = {
   createOfferedCourseIntoDB,
   getAllOfferedCoursesFromDB,
+  getMyOfferedCoursesFromDB,
   getSingleOfferedCourseFromDB,
   deleteOfferedCourseFromDB,
   updateOfferedCourseIntoDB,
