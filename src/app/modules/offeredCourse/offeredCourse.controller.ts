@@ -31,6 +31,10 @@ const getAllOfferedCourses = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// * --------------------------- * //
+// ! Get My Offered Courses
+// * --------------------------- * //
+
 const getMyOfferedCourses = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user.userId;
   const result = await OfferedCourseServices.getMyOfferedCoursesFromDB(userId);

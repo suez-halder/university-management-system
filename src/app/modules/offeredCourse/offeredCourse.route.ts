@@ -15,6 +15,10 @@ router.get(
   OfferedCourseControllers.getAllOfferedCourses,
 );
 
+// * --------------------------- * //
+// ! Get My Offered Courses
+// * --------------------------- * //
+
 router.get(
   '/my-offered-courses',
   auth(USER_ROLE.student),
