@@ -18,6 +18,13 @@ router.post(
   EnrolledCourseControllers.createEnrolledCourse,
 );
 
+// faculty courses
+router.get(
+  '/',
+  auth(USER_ROLE.faculty),
+  EnrolledCourseControllers.getAllEnrolledCourses,
+);
+
 // * --------------------------- * //
 // ! Get My Enrolled Courses
 // * --------------------------- * //
