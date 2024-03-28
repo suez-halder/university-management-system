@@ -11,7 +11,7 @@ const app: Application = express();
 //parsers
 app.use(express.json());
 app.use(cookieParser()); // cookie parser use na korle req.cookies access kora jabena
-app.use(cors({ origin: ['http://localhost:5173'], credentials: true })); // frontend theke use korar jnw
+app.use(cors({ origin: ['http://localhost:5173', '*'], credentials: true })); // frontend theke use korar jnw
 
 // application routes
 app.use('/api/v1', router);

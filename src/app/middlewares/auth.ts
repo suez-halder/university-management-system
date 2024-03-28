@@ -30,12 +30,18 @@ const auth = (...requiredRoles: TUserRole[]) => {
     }
 
     // check-2: if the token in valid / verify the token
-    const decoded = jwt.verify(
-      token,
-      config.jwt_access_secret as string,
-    ) as JwtPayload;
-    // const role = decoded?.role;
-    // const id = decoded.userId
+    let decoded;
+    try {
+      decoded = jwt.verify(
+        token,
+        config.jwt_access_secret as string,
+      ) as JwtPayload;
+      // const role = decoded?.role;
+      // const id = decoded.userId
+    } catch (error) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+    }
+
     const { role, userId, iat } = decoded;
 
     // * user status change hoile jeno jekhane auth guard authorized chilo, sekhane user access korte na pare

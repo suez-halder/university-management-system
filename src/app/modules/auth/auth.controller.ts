@@ -20,8 +20,8 @@ const loginUser = catchAsync(async (req, res) => {
     secure: config.NODE_ENV === 'production',
     httpOnly: true,
     //! will work on digitalOcean or AWS ->
-    sameSite: 'none',
-    maxAge: 1000 * 60 * 60 * 24 * 365,
+    //  ? sameSite: 'none',
+    //   ?maxAge: 1000 * 60 * 60 * 24 * 365,
   });
 
   // send response
